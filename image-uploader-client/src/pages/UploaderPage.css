@@ -1,0 +1,118 @@
+.main-container {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.uploader-container {
+    width: 402px;
+    height: 469px;
+
+    background: #FFFFFF;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.title {
+    margin: 36px 0 0 0;
+
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 27px;
+    /* identical to box height */
+
+    letter-spacing: -0.035em;
+
+    /* Gray 2 */
+
+    color: #4F4F4F;
+}
+
+.subtitle {
+    margin: 15.99px 0 0 0;
+
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 10px;
+    line-height: 15px;
+    /* identical to box height */
+
+    text-align: center;
+    letter-spacing: -0.035em;
+
+    /* Gray 3 */
+
+    color: #828282;
+}
+
+.drop-container {
+    margin-top: 29.62px;
+    box-sizing: border-box;
+    width: 338px;
+    height: 218.9px;
+    background: #F6F8FB;
+    /*border: 1px dashed #97BEF4;*/
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 35.84px;
+    padding-bottom: 39.57px;
+    background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='12' ry='12' stroke='%2397BEF4FF' stroke-width='1' stroke-dasharray='9%2c 9' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e");
+    border-radius: 12px;
+}
+
+.drag-drop-text {
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 18px;
+    margin: 0;
+    /* identical to box height */
+    letter-spacing: -0.035em;
+    /* Gray 4 */
+    color: #BDBDBD;
+}
+
+.or-text {
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 18px;
+    /* identical to box height */
+    text-align: center;
+    letter-spacing: -0.035em;
+    /* Gray 4 */
+    color: #BDBDBD;
+    margin-top: 18.91px;
+}
+
+.file-button {
+    background: #2F80ED;
+    border-radius: 8px;
+    width: 101px;
+    height: 31px;
+    border: 0;
+
+    font-family: 'Noto Sans';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 16px;
+    text-align: center;
+    letter-spacing: -0.035em;
+
+    color: #FFFFFF;
+}

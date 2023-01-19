@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import "./UploaderPage.css";
 import placeholderImage from "../images/image.svg";
 import ImageUploading from "react-images-uploading";
@@ -26,7 +26,7 @@ const UploaderPage = () => {
                     value={images}
                     onChange={(imageList, addUpdateIndex) => {
                         console.info(imageList);
-                        //setImages(imageList);
+                        setImages(imageList);
 
                         const formData = new FormData();
                         formData.append("image", imageList[0].file);
@@ -53,7 +53,7 @@ const UploaderPage = () => {
                     dragProps
                     }) => (
                         <div className="drop-container" {...dragProps}>
-                            <img src={placeholderImage} />
+                            <img src={placeholderImage} alt="Image" />
                             <h2 className="drag-drop-text">Drag & Drop your image here</h2>
                         </div>
                     )}

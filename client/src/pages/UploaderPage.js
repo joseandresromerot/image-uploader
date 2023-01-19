@@ -53,7 +53,7 @@ const UploaderPage = () => {
                     dragProps
                     }) => (
                         <div className="drop-container" {...dragProps}>
-                            <img src={placeholderImage} alt="Image" />
+                            <img src={placeholderImage} alt="Here you will upload your content" />
                             <h2 className="drag-drop-text">Drag & Drop your image here</h2>
                         </div>
                     )}

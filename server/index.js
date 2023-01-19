@@ -1,11 +1,18 @@
 const express = require("express");
 const fileUpload = require('express-fileupload');
+const cloudinary = require('cloudinary');
 
-const UPLOADS_PATH = 'C:\\Users\\josea\\Documents\\Development\\uploads\\';
+require('dotenv').config();
 
 const PORT = process.env.PORT || 3001;
 
 const app = express();
+
+cloudinary.config({ 
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME, 
+    api_key: process.env.CLOUDINARY_API_KEY, 
+    api_secret: process.env.CLOUDINARY_API_SECRET
+});
 
 app.use(
     fileUpload({
@@ -24,24 +31,33 @@ app.post('/upload', (req, res) => {
     // Get the file that was set to our field named "image"
 
     // If no files submitted, exit
-    if (!req.files) return res.sendStatus(400);
+    if (!req.body) return res.sendStatus(400);
 
-    const { image } = req.files;
+    const { imageBase64 } = req.body;
 
     // If no image submitted, exit
-    if (!image) return res.sendStatus(400);
-
-    // If does not have image mime type prevent from uploading
-    //if (/^image/.test(image.mimetype)) return res.sendStatus(400);
-    if (!image.mimetype.includes('image')) return res.sendStatus(400);
+    if (!imageBase64) return res.sendStatus(400);
 
     const imageName = Date.now() + '.jpg';
-
     // Move the uploaded image to our upload folder
-    image.mv(UPLOADS_PATH + imageName);
+    //image.mv(process.env.UPLOADS_PATH + imageName);
 
-    // All good
-    res.sendStatus(200);
+    cloudinary.v2.uploader
+        .upload(imageBase64, {
+            //notification_url: "https://mysite.example.com/notify_endpoint",
+            //resource_type: "video",
+            overwrite: true,
+            public_id: "image_uploader/" + imageName
+        })
+        .then(result => {
+            console.info('UPLOAD RESULT: ', result);
+            // All good
+            res.sendStatus(200);
+        })
+        .catch(err => {
+            console.info('UPLOAD ERROR: ', err);
+            res.sendStatus(400);
+        });
 });
 
 app.listen(PORT, () => {

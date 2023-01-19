@@ -1,6 +1,8 @@
 const express = require("express");
 const fileUpload = require('express-fileupload');
 
+const UPLOADS_PATH = 'C:\\Users\\josea\\Documents\\Development\\uploads\\';
+
 const PORT = process.env.PORT || 3001;
 
 const app = express();
@@ -25,20 +27,18 @@ app.post('/upload', (req, res) => {
     if (!req.files) return res.sendStatus(400);
 
     const { image } = req.files;
-    console.info('0', image);
 
     // If no image submitted, exit
     if (!image) return res.sendStatus(400);
-    console.info('1', !image.mimetype.includes('image'));
 
     // If does not have image mime type prevent from uploading
     //if (/^image/.test(image.mimetype)) return res.sendStatus(400);
     if (!image.mimetype.includes('image')) return res.sendStatus(400);
-    console.info('2');
+
+    const imageName = Date.now() + '.jpg';
 
     // Move the uploaded image to our upload folder
-    image.mv(__dirname + '/upload/' + image.name);
-    console.info('3');
+    image.mv(UPLOADS_PATH + imageName);
 
     // All good
     res.sendStatus(200);

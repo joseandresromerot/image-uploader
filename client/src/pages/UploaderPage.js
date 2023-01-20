@@ -17,23 +17,6 @@ const UploaderPage = () => {
     //         .catch((err) => console.info("ERROR: " + err));
     // }, []);
 
-    
-
-    const convertBase64 = (file) => {
-        return new Promise((resolve, reject) => {
-            const fileReader = new FileReader();
-            fileReader.readAsDataURL(file);
-
-            fileReader.onload = () => {
-                resolve(fileReader.result);
-            };
-
-            fileReader.onerror = (error) => {
-                reject(error);
-            };
-        });
-    };
-
     return (
         <div className="main-container">
             <div className="uploader-container">
@@ -45,24 +28,16 @@ const UploaderPage = () => {
                         console.info(imageList);
                         setImages(imageList);
 
-                        convertBase64(imageList[0].file)
-                            .then(base64 => {
-                                const formData = new FormData();
-                                formData.append("imageBase64", base64);
-                                axios({
-                                    method: "post",
-                                    url: "/upload",
-                                    data: formData,
-                                    headers: { "Content-Type": "multipart/form-data" }
-                                })
-                                    .then(() => console.info("SUCCESS!!!"))
-                                    .catch((err) => console.info("ERROR>>", err));
-                            })
-                            .catch(err => {
-                                console.info('convertBase64 ERROR: ', err);
-                            });
-
-                        
+                        const formData = new FormData();
+                        formData.append("image", imageList[0].file);
+                        axios({
+                            method: "post",
+                            url: process.env.REACT_APP_API_URL + "/upload",
+                            data: formData,
+                            headers: { "Content-Type": "multipart/form-data" }
+                        })
+                            .then(() => console.info("SUCCESS!!!"))
+                            .catch((err) => console.info("ERROR>>", err));
                     }}
                     maxNumber={1}
                     dataURLKey="data_url"

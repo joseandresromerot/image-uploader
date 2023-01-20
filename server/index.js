@@ -1,12 +1,16 @@
 const express = require("express");
 const fileUpload = require('express-fileupload');
 const cloudinary = require('cloudinary');
+const cors = require('cors');
 
 require('dotenv').config();
 
 const PORT = process.env.PORT || 3001;
 
 const app = express();
+
+app.use(cors());
+
 
 cloudinary.config({ 
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME, 
@@ -20,6 +24,7 @@ app.use(
             fileSize: 10000000,
         },
         abortOnLimit: true,
+        useTempFiles: true
     })
 );
 
@@ -30,20 +35,27 @@ app.get("/api", (req, res) => {
 app.post('/upload', (req, res) => {
     // Get the file that was set to our field named "image"
 
-    // If no files submitted, exit
-    if (!req.body) return res.sendStatus(400);
+    console.info('req', req);
 
-    const { imageBase64 } = req.body;
+    if (!req.files) return res.sendStatus(400);
+
+    const { image } = req.files;
 
     // If no image submitted, exit
-    if (!imageBase64) return res.sendStatus(400);
+    if (!image) return res.sendStatus(400);
 
-    const imageName = Date.now() + '.jpg';
+    // If does not have image mime type prevent from uploading
+    if (!image.mimetype.includes('image')) return res.sendStatus(400);
+
+    const imageName = Date.now() + "";
+
     // Move the uploaded image to our upload folder
     //image.mv(process.env.UPLOADS_PATH + imageName);
 
+    console.info('image.tempFilePath', image.tempFilePath);
+
     cloudinary.v2.uploader
-        .upload(imageBase64, {
+        .upload(image.tempFilePath, {
             //notification_url: "https://mysite.example.com/notify_endpoint",
             //resource_type: "video",
             overwrite: true,

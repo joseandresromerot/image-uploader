@@ -48,10 +48,11 @@ const UploaderPage = () => {
                         convertBase64(imageList[0].file)
                             .then(base64 => {
                                 const formData = new FormData();
-                                formData.append("imageBase64", base64);
+                                formData.append("image", imageList[0].file);
+                                //formData.append("imageBase64", 'cfcfcfc');
                                 axios({
                                     method: "post",
-                                    url: "/upload",
+                                    url: "http://localhost:9000/.netlify/functions/api/upload",
                                     data: formData,
                                     headers: { "Content-Type": "multipart/form-data" }
                                 })

@@ -6,6 +6,7 @@ const cors = require('cors');
 require('dotenv').config();
 
 const PORT = process.env.PORT || 3001;
+const HOST = '0.0.0.0';
 
 const app = express();
 
@@ -72,6 +73,6 @@ app.post('/upload', (req, res) => {
         });
 });
 
-app.listen(PORT, () => {
-  console.log(`Server listening on ${PORT}`);
+app.listen(PORT, HOST, () => {
+    console.log(`Running on http://${HOST}:${PORT}`);
 });

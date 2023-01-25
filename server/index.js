@@ -65,7 +65,8 @@ app.post('/upload', (req, res) => {
         .then(result => {
             console.info('UPLOAD RESULT: ', result);
             // All good
-            res.sendStatus(200);
+            //res.sendStatus(200);
+            res.json(result);
         })
         .catch(err => {
             console.info('UPLOAD ERROR: ', err);

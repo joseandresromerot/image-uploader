@@ -12,7 +12,7 @@ function App() {
     <div className="App">
       <Router>
         <Switch>
-          <Route path='/'>
+          <Route exact path='/'>
             <UploaderPage />
           </Route>
           <Route path='/success'>
@@ -20,6 +20,8 @@ function App() {
           </Route>
         </Switch>
       </Router>
+
+      <div className='footer'>created by joseandresromerot - devChallenges.io</div>
     </div>
   );
 }

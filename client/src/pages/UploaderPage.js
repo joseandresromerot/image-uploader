@@ -34,7 +34,7 @@ const UploaderPage = ({ history }) => {
         formData.append("image", file);
         axios({
             method: "post",
-            url: process.env.REACT_APP_API_URL + "/upload",
+            url: window._env_.REACT_APP_API_URL + "/upload",
             data: formData,
             headers: { "Content-Type": "multipart/form-data" }
         })

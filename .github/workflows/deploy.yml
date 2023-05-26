@@ -33,13 +33,16 @@ jobs:
       - name: Docker Pull and Run from Hub
         uses: appleboy/ssh-action@v0.1.10
         env:
-          DOCKER_IMAGE: image-uploader-client:latest
+          DOCKER_USER: ${{secrets.DOCKER_USER}}
+          DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
+          DOCKER_IMAGE: ${{secrets.DOCKER_USER}}/image-uploader-client:latest
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ubuntu
           key: ${{ secrets.EC2_PRIVATE_KEY }}
-          envs: DOCKER_IMAGE
+          envs: DOCKER_USER,DOCKER_PASSWORD,DOCKER_IMAGE
           script: |
+            docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
             docker pull $DOCKER_IMAGE
             docker stop image-uploader-client
             docker rm image-uploader-client

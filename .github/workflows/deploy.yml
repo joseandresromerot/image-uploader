@@ -10,7 +10,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '16.10.0'
-      - name: Install yarn and run unittest
+      - name: Install yarn
         run: |
           cd client
           yarn
@@ -26,6 +26,7 @@ jobs:
         env:
           REPO: image-uploader-client
         run: |
+          cd client
           docker build -t $REPO .
           docker tag $REPO:latest ${{secrets.DOCKER_USER}}/$REPO:latest
           docker push ${{secrets.DOCKER_USER}}/$REPO

@@ -32,9 +32,8 @@ jobs:
           REPO: image-uploader-client
         run: |
           cd client
-          docker build -t $REPO .
-          docker tag $REPO:${{github.ref_name}} ${{secrets.DOCKER_USER}}/$REPO:${{github.ref_name}}
-          docker push ${{secrets.DOCKER_USER}}/$REPO
+          docker build -t ${{secrets.DOCKER_USER}}/$REPO:${{github.ref_name}} .
+          docker push ${{secrets.DOCKER_USER}}/$REPO:${{github.ref_name}}
       - name: Docker Pull and Run from Hub
         uses: appleboy/ssh-action@v0.1.10
         env:

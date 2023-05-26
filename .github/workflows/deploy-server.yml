@@ -51,4 +51,4 @@ jobs:
             docker pull $DOCKER_IMAGE
             docker stop image-uploader-server
             docker rm image-uploader-server
-            docker run -d -e CLOUDINARY_CLOUD_NAME='$CLOUDINARY_CLOUD_NAME' -e CLOUDINARY_API_KEY='$CLOUDINARY_API_KEY' -e CLOUDINARY_API_SECRET='$CLOUDINARY_API_SECRET' --name image-uloader-server -p 3001:3001 $DOCKER_IMAGE
+            docker run -d -e CLOUDINARY_CLOUD_NAME='$CLOUDINARY_CLOUD_NAME' -e CLOUDINARY_API_KEY='$CLOUDINARY_API_KEY' -e CLOUDINARY_API_SECRET='$CLOUDINARY_API_SECRET' --name image-uploader-server -p 3001:3001 $DOCKER_IMAGE

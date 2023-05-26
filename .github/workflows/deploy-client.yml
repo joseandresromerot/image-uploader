@@ -4,8 +4,8 @@ on:
   push:
     branches:
       - master
-    paths:
-      - client/**
+    tags:
+      - '*'
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest

@@ -38,14 +38,15 @@ jobs:
           DOCKER_USER: ${{secrets.DOCKER_USER}}
           DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
           DOCKER_IMAGE: ${{secrets.DOCKER_USER}}/image-uploader-client:${{github.ref_name}}
+          REACT_APP_API_URL: ${{secrets.REACT_APP_API_URL}}
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ubuntu
           key: ${{ secrets.EC2_PRIVATE_KEY }}
-          envs: DOCKER_USER,DOCKER_PASSWORD,DOCKER_IMAGE
+          envs: DOCKER_USER,DOCKER_PASSWORD,DOCKER_IMAGE,REACT_APP_API_URL
           script: |
             docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
             docker pull $DOCKER_IMAGE
             docker stop image-uploader-client
             docker rm image-uploader-client
-            docker run -d --name image-uploader-client -e REACT_APP_API_URL='http://cachetitodev.xyz:3001' -p 81:80 $DOCKER_IMAGE
+            docker run -d --name image-uploader-client -e REACT_APP_API_URL=$REACT_APP_API_URL -p 81:80 $DOCKER_IMAGE

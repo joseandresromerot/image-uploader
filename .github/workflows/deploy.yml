@@ -32,13 +32,15 @@ jobs:
           docker push ${{secrets.DOCKER_USER}}/$REPO
       - name: Docker Pull and Run from Hub
         uses: appleboy/ssh-action@v0.1.10
+        env:
+          DOCKER_IMAGE: image-uploader-client:latest
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ubuntu
           key: ${{ secrets.EC2_PRIVATE_KEY }}
-          envs: GITHUB_SHA
+          envs: DOCKER_IMAGE
           script: |
-            docker pull ${{secrets.DOCKER_USER}}/$REPO:latest
+            docker pull $DOCKER_IMAGE
             docker stop image-uploader-client
             docker rm image-uploader-client
-            docker run -d --name image-uploader-client -e REACT_APP_API_URL='http://cachetitodev.xyz:3001' -p 81:80 ${{secrets.DOCKER_USER}}/$REPO:latest
+            docker run -d --name image-uploader-client -e REACT_APP_API_URL='http://cachetitodev.xyz:3001' -p 81:80 $DOCKER_IMAGE

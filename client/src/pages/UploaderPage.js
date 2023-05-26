@@ -64,7 +64,7 @@ const UploaderPage = ({ history }) => {
                 </div>
             ) : (
                 <div className="uploader-container">
-                    <h2 className="title">Upload your image</h2>
+                    <h2 className="title">Upload your imageSS</h2>
                     <h5 className="subtitle">File should be Jpeg, Png,...</h5>
                     <ImageUploading
                         value={[]}

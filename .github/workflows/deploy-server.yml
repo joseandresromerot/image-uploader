@@ -1,0 +1,54 @@
+name: deploy-server
+run-name: Deploying Image Uploader Server
+on:
+  push:
+    tags:
+      - '*'
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js 16.10
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16.10.0'
+      - name: Install npm
+        run: |
+          cd server
+          npm install
+        env:
+          CI: true
+      - name: Docker Login
+        env:
+          DOCKER_USER: ${{secrets.DOCKER_USER}}
+          DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
+        run:
+          docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
+      - name: Docker Push
+        env:
+          REPO: image-uploader-server
+        run: |
+          cd server
+          docker build -t ${{secrets.DOCKER_USER}}/$REPO:${{github.ref_name}} .
+          docker push ${{secrets.DOCKER_USER}}/$REPO:${{github.ref_name}}
+      - name: Docker Pull and Run from Hub
+        uses: appleboy/ssh-action@v0.1.10
+        env:
+          DOCKER_USER: ${{secrets.DOCKER_USER}}
+          DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
+          DOCKER_IMAGE: ${{secrets.DOCKER_USER}}/image-uploader-server:${{github.ref_name}}
+          CLOUDINARY_CLOUD_NAME: ${{secrets.CLOUDINARY_CLOUD_NAME}}
+          CLOUDINARY_API_KEY: ${{secrets.CLOUDINARY_API_KEY}}
+          CLOUDINARY_API_SECRET: ${{secrets.CLOUDINARY_API_SECRET}}
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ubuntu
+          key: ${{ secrets.EC2_PRIVATE_KEY }}
+          envs: DOCKER_USER,DOCKER_PASSWORD,DOCKER_IMAGE,CLOUDINARY_CLOUD_NAME,CLOUDINARY_API_KEY,CLOUDINARY_API_SECRET
+          script: |
+            docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
+            docker pull $DOCKER_IMAGE
+            docker stop image-uploader-server
+            docker rm image-uploader-server
+            docker run -d -e CLOUDINARY_CLOUD_NAME='$CLOUDINARY_CLOUD_NAME' -e CLOUDINARY_API_KEY='$CLOUDINARY_API_KEY' -e CLOUDINARY_API_SECRET='$CLOUDINARY_API_SECRET' --name image-uloader-server -p 3001:3001 $DOCKER_IMAGE

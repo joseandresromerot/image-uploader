@@ -7,11 +7,25 @@ const PreviewPage = ({ history }) => {
     const [isCopied, setIsCopied] = useState(false);
     const { imageUrl } = history.location.state;
 
+    function unsecuredCopyToClipboard(text) {
+        const textArea = document.createElement("textarea");
+        textArea.value = text;
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        try {
+          document.execCommand('copy');
+        } catch (err) {
+          console.error('Unable to copy to clipboard', err);
+        }
+        document.body.removeChild(textArea);
+    }
+
     async function copyTextToClipboard(text) {
-        if ('clipboard' in navigator) {
+        if (navigator.clipboard) {
           return await navigator.clipboard.writeText(text);
         } else {
-          return document.execCommand('copy', true, text);
+          return unsecuredCopyToClipboard(text);
         }
     };
 

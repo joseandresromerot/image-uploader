@@ -1,6 +1,13 @@
-name: deployment
-run-name: Deploying Image Uploader
-on: [push]
+name: deploy-client
+run-name: Deploying Image Uploader Client
+on:
+  push:
+    branches:
+      - master
+    tags:
+      - '*'
+    paths:
+      - client/**
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
@@ -28,14 +35,14 @@ jobs:
         run: |
           cd client
           docker build -t $REPO .
-          docker tag $REPO:latest ${{secrets.DOCKER_USER}}/$REPO:latest
+          docker tag $REPO:${{github.ref_name}} ${{secrets.DOCKER_USER}}/$REPO:${{github.ref_name}}
           docker push ${{secrets.DOCKER_USER}}/$REPO
       - name: Docker Pull and Run from Hub
         uses: appleboy/ssh-action@v0.1.10
         env:
           DOCKER_USER: ${{secrets.DOCKER_USER}}
           DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
-          DOCKER_IMAGE: ${{secrets.DOCKER_USER}}/image-uploader-client:latest
+          DOCKER_IMAGE: ${{secrets.DOCKER_USER}}/image-uploader-client:${{github.ref_name}}
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ubuntu
